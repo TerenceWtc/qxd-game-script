@@ -1,0 +1,16 @@
+@PHPSESSID = ddb1b4e0-b6dd-11ea-b635-f106ad6873fb
+@IP_1 = 116.185.0.001
+@IP_2 = 116.185.0.002
+@IP_3 = 116.185.0.003
+
+### 什么一 18256
+GET /index.php?cmd=Yqzx1dpubrmlRclmedCZmPWJvb2ttYXJrJmFjPTE0NjQ2NTIyMzAmcHc9YzA3Y2ZhODUxMjg3OGJiOThlZWYyMGNlMTVkYmM1ZDUmYl90PTAmX3VzZXJfaWRfdG9rZW49MTgyNTY= HTTP/1.1
+Host: qxd.gunpi.cn
+x-forwarded-for: {{IP_1}}
+Cookie: PHPSESSID={{PHPSESSID}}
+
+###
+GET http://localhost:3000/daily-mission
+
+###
+GET http://localhost:3000/remains
