@@ -1,12 +1,16 @@
+/*global process*/
 var fs = require('fs');
 
 try {
-  var configJson = JSON.parse(fs.readFileSync(
-    process.cwd() + '/account.json', 'utf-8'));
-  } catch (e) {
-  configJson = null;
+  var accountJson = JSON.parse(fs.readFileSync(process.cwd() + '/account.json', 'utf-8'));
+} catch (e) {
+  accountJson = null;
 }
 
-var config = configJson ? configJson : require('./account.json');
+const account = accountJson ? accountJson : require('./account.json');
+const constant = require('./constant.json');
 
-exports.config = config;
+module.exports = {
+  account,
+  constant
+}

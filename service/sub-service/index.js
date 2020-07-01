@@ -1,6 +1,6 @@
-const subExplore = require('./explore');
-const subLadder = require('./ladder');
-const subArena = require('./arena');
+// const subExplore = require('./explore');
+// const subLadder = require('./ladder');
+// const subArena = require('./arena');
 const subTraining = require('./training');
 const subChoice = require('./choice');
 const subLogout = require('./logout');
@@ -9,11 +9,13 @@ const subInstanceZones = require('./instance-zones');
 const subDraw = require('./draw');
 const subMission = require('./mission');
 const subFriendPoint = require('./friend-point');
+const subPresent = require('./present');
+const common = require('./common').common;
 
 module.exports = {
-  subExplore,
-  subLadder,
-  subArena,
+  // subExplore,
+  // subLadder,
+  // subArena,
   subTraining,
   subChoice,
   subLogout,
@@ -21,5 +23,7 @@ module.exports = {
   subInstanceZones,
   subDraw,
   subMission,
-  subFriendPoint
+  subFriendPoint,
+  subPresent,
+  common
 }

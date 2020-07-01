@@ -23,11 +23,10 @@ const util = require('../../util');
 
 const remainsFull = async (html, req) => {
   req.logger.info('function remainsFull start');
-  let DOM = util.html2DOM(html);
-  let text = DOM.text();
-  let label, link;
+  let text, label, link;
   let i = 0;
   while (i < 10) {
+    text = util.convertHtml(html);
     i++;
     if (text.includes(NO_ENOUGH_ATTACK_POINT_MSG)) {
       [label, link] = util.getFirstLink(html)
@@ -40,48 +39,47 @@ const remainsFull = async (html, req) => {
     html = await util.click(label, link, req);
     req.logger.info('label: ', label);
     req.logger.info('link: ', link);
-    DOM = util.html2DOM(html);
-    text = DOM.text();
+    text = util.convertHtml(html);
     req.logger.info(text);
   }
   req.logger.info('function remainsFull end');
-  return await util.backToMainPage(html, req);
+  return await util.backToMainPage(req);
 }
 
 const remains28Fast = async (html, req) => {
-  req.logger.info('function remains28Fast start');
-  let DOM = util.html2DOM(html);
-  let text = DOM.text();
-  let label, link;
-  while (!text.includes(NOT_ENOUGH_EXPLORE_POINT_MSG)) {
-    label = labelArray.find(arr => {
-      link = util.getLinksByName(arr, html);
-      return link != null;
-    });
-    html = await util.click(label, link, req);
-    DOM = util.html2DOM(html);
-    text = DOM.text();
-  }
-  req.logger.info('function remains28Fast end');
-  return await util.backToMainPage(html, req);
+//   req.logger.info('function remains28Fast start');
+//   let DOM = util.convertHtml(html, true);
+//   let text = DOM.text();
+//   let label, link;
+//   while (!text.includes(NOT_ENOUGH_EXPLORE_POINT_MSG)) {
+//     label = labelArray.find(arr => {
+//       link = util.getLinksByName(arr, html);
+//       return link != null;
+//     });
+//     html = await util.click(label, link, req);
+//     DOM = util.convertHtml(html, true);
+//     text = DOM.text();
+//   }
+//   req.logger.info('function remains28Fast end');
+//   return await util.backToMainPage(req);
 }
 
 const remains28Slow = async (html, req) => {
-  req.logger.info('function remains28Slow start');
-  let DOM = util.html2DOM(html);
-  let text = DOM.text();
-  let label, link;
-  while (!text.includes(NOT_ENOUGH_EXPLORE_POINT_MSG)) {
-    label = labelArray.find(arr => {
-      link = util.getLinksByName(arr, html);
-      return link != null;
-    });
-    html = await util.click(label, link, req);
-    DOM = util.html2DOM(html);
-    text = DOM.text();
-  }
-  req.logger.info('function remains28Slow end');
-  return await util.backToMainPage(html, req);
+//   req.logger.info('function remains28Slow start');
+//   let DOM = util.convertHtml(html, true);
+//   let text = DOM.text();
+//   let label, link;
+//   while (!text.includes(NOT_ENOUGH_EXPLORE_POINT_MSG)) {
+//     label = labelArray.find(arr => {
+//       link = util.getLinksByName(arr, html);
+//       return link != null;
+//     });
+//     html = await util.click(label, link, req);
+//     DOM = util.convertHtml(html, true);
+//     text = DOM.text();
+//   }
+//   req.logger.info('function remains28Slow end');
+//   return await util.backToMainPage(req);
 }
 
 const remainsMission = async (html, req) => {
@@ -93,7 +91,7 @@ const remainsMission = async (html, req) => {
     html = await util.click(label, link, req);
   }
   req.logger.info(`account: ${req.account}, function remainsMission end`);
-  return await util.backToMainPage(html, req);
+  return await util.backToMainPage(req);
 }
 
 module.exports = {

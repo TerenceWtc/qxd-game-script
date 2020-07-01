@@ -1,86 +1,130 @@
+/*global process*/
 const cheerio = require('cheerio');
+// const qs = require('qs');
+const config = require('../config');
 const fetch = require('../fetch');
+const log4js = require('../config/log');
+const logger = log4js.getLogger(process.env.NODE_ENV || 'prod');
 
-const MAIN_PAGE = '主页';
-const regex = '(\(\d+\+?\))?';
-
-const html2DOM = (html) => {
-  return cheerio.load(html);
+const convertHtml = (html, isDOM = false) => {
+  let document;
+  try {
+    document = cheerio.load(html);
+  } catch (error) {
+    logger.error(`convertHtml error: ${error.message}, html content: ${html}`);
+    document = cheerio.load(config.constant.TEMPLATE_EMPTY_HTML);
+  }
+  return isDOM ? document : document.text();
 }
 
-const getLinksByName = (name, html) => {
-  let document = html2DOM(html);
+const getLinksByName = (name, html, isFull, isReg, isBold) => {
+  let document = convertHtml(html, true);
   let hyperLinks = document('a');
-  let resultUrl = hyperLinks.toArray().slice(0, -4).find(hyperLink => {
-    return hyperLink.children[0].data == name;
-  });
-  if (resultUrl != undefined) {
-    return resultUrl.attribs.href;
+  let resultUrl;
+  hyperLinks = isFull ? hyperLinks.toArray() : hyperLinks.toArray().slice(0, -4);
+  if (isReg) {
+    let nameReg = new RegExp(`${name}${config.constant.REGEX_COUNT}`, 'g');
+    resultUrl = hyperLinks.find(hyperLink => {
+      return nameReg.test(hyperLink.children[0].data);
+    });
+  } else {
+    resultUrl = hyperLinks.find(hyperLink => {
+      if (isBold && hyperLink.children[0].children) {
+        return hyperLink.children[0].children[0].data == name;
+      } else {
+        return hyperLink.children[0].data == name;
+      }
+    });
   }
-  return null
+  return resultUrl ? resultUrl.attribs.href : false;
 };
 
-const getFullLinksByName = (name, html) => {
-  let document = html2DOM(html);
-  let hyperLinks = document('a');
-  let resultUrl = hyperLinks.toArray().find(hyperLink => {
-    return hyperLink.children[0].data == name;
+const getLabelAndURL = (labelArray, html, isFull = false, isReg = false, isBold = false) => {
+  let label, url;
+  label = labelArray.find(arr => {
+    url = getLinksByName(arr, html, isFull, isReg, isBold);
+    return url;
   });
-  if (resultUrl != undefined) {
-    return resultUrl.attribs.href;
-  }
-  return null
-};
-
-const getLinksByNameAndReg = (name, html) => {
-  name = `/${name}${regex}/`
-  let document = html2DOM(html);
-  let hyperLinks = document('a');
-  let resultUrl = hyperLinks.toArray().slice(0, -4).find(hyperLink => {
-    return hyperLink.children[0].data == name;
-  });
-  if (resultUrl != undefined) {
-    return resultUrl.attribs.href;
-  }
-  return null
-};
+  return [label, url];
+}
 
 const getFirstLink = (html) => {
-  let document = html2DOM(html);
+  let document = convertHtml(html, true);
   let hyperLinks = document('a');
   let result = hyperLinks.toArray().shift()
   return [result.children[0].data, result.attribs.href];
 };
 
+const MARKBOOK_TITLE = '书签';
+const RETURN_HREF = '返回游戏';
+const TOO_FAST_TITLE = '【群雄斗】点击太快了！！';
+const IP_BIND_MSG = '请勿频繁登录帐号';
+
+const getInstance = async (url) => {
+  return await fetch.instance.get(url).then(async (response) => {
+    let DOM = convertHtml(response, true);
+    if (DOM('title').text() == MARKBOOK_TITLE) {
+      response = await fetch.instance.get(getLinksByName(RETURN_HREF, response, true));
+    }
+    if (DOM('title').text() == TOO_FAST_TITLE) {
+      response = await fetch.instance.get(global.mainPageLink);
+    }
+    if (DOM.text().includes(IP_BIND_MSG)) {
+      logger.error(IP_BIND_MSG)
+    }
+    return response;
+  }).catch((err) => {
+    logger.error('get request error:', err);
+    return null;
+  })
+}
+
+const postInstance = async (data, url) => {
+  logger.info('data: ', data);
+  return await fetch.instance.post(url, data).then(async (response) => {
+    let DOM = convertHtml(response, true);
+    if (DOM('title').text() == MARKBOOK_TITLE) {
+      response = await getInstance(getLinksByName(RETURN_HREF, response, true));
+    }
+    if (DOM('title').text() == TOO_FAST_TITLE) {
+      response = await post(url, data);
+    }
+    if (DOM.text().includes(IP_BIND_MSG)) {
+      logger.error(IP_BIND_MSG)
+    }
+    return response;
+  }).catch((err) => {
+    logger.error('post request error:', err);
+    return null;
+  })
+
+}
+
 const click = async (name, url, req) => {
   if (url) {
-    req.logger.info(`account: ${req.account}, click: ${name}, url: ${url}`);
-    let html = await fetch.get(url);
+    logger.info(`account: ${req.account}, click: ${name}, url: ${url}`);
+    let html = await getInstance(url);
     return html;
   }
+  logger.error(`account: ${req.account}, click: ${name}, url: ${url} not found`);
   return null;
 }
 
 const post = async (data, url, req) => {
   if (url) {
     req.logger.info(`account: ${req.account}, post: ${data}, url: ${url}`);
-    let html = await fetch.post(data, url);
+    let html = await postInstance(data, url);
     return html;
   }
   return null;
 }
 
-const backToMainPage = async (html, req) => {
-  link = getLinksByName(MAIN_PAGE, html);
-  if (!link) {
-    return html;
-  }
-  return await click(MAIN_PAGE, link, req);
+const backToMainPage = async (req) => {
+  return await click(config.constant.LABEL_MAIN_PAGE, global.mainPageLink, req);
 }
 
 const getAccountName = (html) => {
-  let DOM = html2DOM(html);
-  let text = DOM.text();
+  let text = convertHtml(html);
   let account = 'Unknown';
   if (text.includes('[MM]')) {
     account = text.split('[MM]')[1].split('(')[0];
@@ -90,23 +134,35 @@ const getAccountName = (html) => {
   return account;
 }
 
+const getMainPage = async (html, req) => {
+  let characterURL, mainPageURL;
+  characterURL = getLinksByName(config.constant.LABEL_CHARACTER, html, undefined, undefined, true);
+  html = await click(config.constant.LABEL_CHARACTER, characterURL, req);
+  mainPageURL = getLinksByName(config.constant.LABEL_MAIN_PAGE, html);
+  if (!mainPageURL) {
+    req.logger.error(`account ${req.account} can not find main page`);
+  }
+  return mainPageURL;
+}
+
 const randomIP = () => {
   let ip = [];
   for (let i = 0; i < 4; i++) {
     ip.push(Math.floor(Math.random() * 254 + 2));
   }
-  return ip.join('.')
+  return ip.join('.');
 }
 
 module.exports = {
-  html2DOM,
+  convertHtml,
   getLinksByName,
-  getFullLinksByName,
-  getLinksByNameAndReg,
+  getLabelAndURL,
   getFirstLink,
+  getInstance,
   click,
   post,
   backToMainPage,
   getAccountName,
+  getMainPage,
   randomIP
 }

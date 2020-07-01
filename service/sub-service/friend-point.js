@@ -1,22 +1,18 @@
 /**
  * 友情点
  */
-
+const config = require('../../config');
 const util = require('../../util');
 
-const DUPLICATE = '好友加油今天已经加过油了！';
 const labelArray = ['好友', '每日留言加油 '];
 
 const friendPoint = async (html, req) => {
   req.logger.info(`account: ${req.account}, function friendPoint start`);
-  let DOM = util.html2DOM(html);
-  let text = DOM.text();
-  let label, link;
-  while (true) {
+  let text, label, link;
+  while (config.constant.FLAG_LOOP) {
+    text = util.convertHtml(html);
     if (text.includes(DUPLICATE)) {
-      html = await util.backToMainPage(html, req);
-      DOM = util.html2DOM(html);
-      text = DOM.text();
+      html = await util.backToMainPage(req);
       continue;
     }
     label = labelArray.find(arr => {
@@ -27,11 +23,9 @@ const friendPoint = async (html, req) => {
       break;
     }
     html = await util.click(label, link, req);
-    DOM = util.html2DOM(html);
-    text = DOM.text();
   }
   req.logger.info(`account: ${req.account}, function friendPoint end`);
-  return await util.backToMainPage(html, req);
+  return await util.backToMainPage(req);
 }
 
 module.exports = {
