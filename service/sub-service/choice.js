@@ -19,7 +19,7 @@ const choice = async (html, req) => {
       break;
     }
     if (!url) {
-      req.logger.info(text);
+      req.logger.warn(text);
       [label, url] = util.getFirstLink(html);
     }
     html = await util.click(label, url, req);

@@ -2,15 +2,15 @@
 var fs = require('fs');
 
 try {
-  var accountJson = JSON.parse(fs.readFileSync(process.cwd() + '/account.json', 'utf-8'));
+  var settingsJson = JSON.parse(fs.readFileSync(process.cwd() + '/settings.json', 'utf-8'));
 } catch (e) {
-  accountJson = null;
+  settingsJson = null;
 }
 
-const account = accountJson ? accountJson : require('./account.json');
+const settings = settingsJson ? settingsJson : require('./settings.json');
 const constant = require('./constant.json');
 
 module.exports = {
-  account,
+  settings,
   constant
 }

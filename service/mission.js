@@ -6,7 +6,7 @@ const config = require('../config');
 const util = require('../util');
 const sub = require('./sub-service');
 
-const accounts = config.account['任务账号'];
+const accounts = config.settings['任务账号'];
 const constant = config.constant;
 
 const dailyMission = async (req) => {
@@ -20,6 +20,7 @@ const dailyMission = async (req) => {
 
     // login
     html = await util.getInstance(accounts[i]);
+    // req.bookmark = accounts[i];
     req.account = util.getAccountName(html);
 
     // store main page
@@ -30,18 +31,18 @@ const dailyMission = async (req) => {
     html = await sub.common(html, 'ladder', constant.FLAG_LOOP, constant.BREAK_TEXT_LADDER, constant.ARRAY_LADDER, req);
     html = await sub.common(html, 'arena', constant.FLAG_LOOP, constant.BREAK_TEXT_ARENA, constant.ARRAY_ARENA, req);
     html = await sub.common(html, 'training', constant.FLAG_LOOP, constant.BREAK_TEXT_NONE, constant.ARRAY_TRAINING, req);
-    // need to test
     html = await sub.subChoice.choice(html, req);
     html = await sub.subRemains.remainsMission(html, req);
     html = await sub.subInstanceZones.instanceZones(html, req);
     html = await sub.subDraw.draw(html, req);
-    // need to test
     html = await sub.common(html, 'friend-point', constant.FLAG_LOOP, constant.BREAK_TEXT_NONE, constant.ARRAY_FRIEND_POINT, req);
-    // need to test
     html = await sub.common(html, 'mission', constant.FLAG_LOOP, constant.BREAK_TEXT_NONE, constant.ARRAY_MISSION, req);
-    html = await sub.subPresent.present(html, req);
+    if (config.settings['自动领取礼物']) {
+      html = await sub.subPresent.present(html, req);
+    }
+    html = await sub.strongHold.strongHold(html, req);
 
-    // logout
+    // // logout
     await sub.subLogout.logout(html, req);
   }
   req.logger.info(`daily mission complete! finish ${accounts.length} accounts.`);

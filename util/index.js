@@ -1,6 +1,6 @@
 /*global process*/
 const cheerio = require('cheerio');
-// const qs = require('qs');
+const bmob = require('../bmob');
 const config = require('../config');
 const fetch = require('../fetch');
 const log4js = require('../config/log');
@@ -55,22 +55,17 @@ const getFirstLink = (html) => {
   return [result.children[0].data, result.attribs.href];
 };
 
-const MARKBOOK_TITLE = '书签';
-const RETURN_HREF = '返回游戏';
-const TOO_FAST_TITLE = '【群雄斗】点击太快了！！';
-const IP_BIND_MSG = '请勿频繁登录帐号';
-
 const getInstance = async (url) => {
   return await fetch.instance.get(url).then(async (response) => {
     let DOM = convertHtml(response, true);
-    if (DOM('title').text() == MARKBOOK_TITLE) {
-      response = await fetch.instance.get(getLinksByName(RETURN_HREF, response, true));
+    if (DOM('title').text() == config.constant.TITLE_BOOKMARK) {
+      response = await fetch.instance.get(getLinksByName(config.constant.TEXT_RETURN_GAME, response, true));
     }
-    if (DOM('title').text() == TOO_FAST_TITLE) {
+    if (DOM('title').text() == config.constant.TITLE_TOO_FAST) {
       response = await fetch.instance.get(global.mainPageLink);
     }
-    if (DOM.text().includes(IP_BIND_MSG)) {
-      logger.error(IP_BIND_MSG)
+    if (DOM.text().includes(config.constant.TEXT_IP_BIND)) {
+      logger.error(config.constant.TEXT_IP_BIND)
     }
     return response;
   }).catch((err) => {
@@ -83,14 +78,14 @@ const postInstance = async (data, url) => {
   logger.info('data: ', data);
   return await fetch.instance.post(url, data).then(async (response) => {
     let DOM = convertHtml(response, true);
-    if (DOM('title').text() == MARKBOOK_TITLE) {
-      response = await getInstance(getLinksByName(RETURN_HREF, response, true));
+    if (DOM('title').text() == config.constant.TITLE_BOOKMARK) {
+      response = await getInstance(getLinksByName(config.constant.TEXT_RETURN_GAME, response, true));
     }
-    if (DOM('title').text() == TOO_FAST_TITLE) {
-      response = await post(url, data);
+    if (DOM('title').text() == config.constant.TITLE_TOO_FAST) {
+      response = await fetch.instance.get(global.mainPageLink);
     }
-    if (DOM.text().includes(IP_BIND_MSG)) {
-      logger.error(IP_BIND_MSG)
+    if (DOM.text().includes(config.constant.TEXT_IP_BIND)) {
+      logger.error(config.constant.TEXT_IP_BIND)
     }
     return response;
   }).catch((err) => {
@@ -135,9 +130,14 @@ const getAccountName = (html) => {
 }
 
 const getMainPage = async (html, req) => {
-  let characterURL, mainPageURL;
+  let characterURL, mainPageURL, text;
   characterURL = getLinksByName(config.constant.LABEL_CHARACTER, html, undefined, undefined, true);
   html = await click(config.constant.LABEL_CHARACTER, characterURL, req);
+  text = convertHtml(html);
+  if (text.includes('ID')) {
+    req.accountId = /ID:\d+/.exec(text)[0];
+  }
+  await bmob.saveBmob(req);
   mainPageURL = getLinksByName(config.constant.LABEL_MAIN_PAGE, html);
   if (!mainPageURL) {
     req.logger.error(`account ${req.account} can not find main page`);

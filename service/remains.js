@@ -7,7 +7,7 @@ const fetch = require('../fetch');
 const util = require('../util');
 const sub = require('./sub-service');
 
-const account = config.account['遗迹账号'];
+const account = config.settings['遗迹账号'];
 
 const remains = async (req) => {
   req.logger.info('start remains');

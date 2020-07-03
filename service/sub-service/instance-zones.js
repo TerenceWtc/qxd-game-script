@@ -6,8 +6,6 @@
 const config = require('../../config');
 const util = require('../../util');
 
-const DIFFICULTY_CHOICE_MSG = '难度选择:';
-
 const instanceZones = async (html, req) => {
   req.logger.info(`account: ${req.account}, function instanceZones start`);
   let DOM = util.convertHtml(html, true);
@@ -20,7 +18,7 @@ const instanceZones = async (html, req) => {
     if (text.includes(config.constant.BREAK_TEXT_INSTANCE_ZONE_COUNT) && !util.getLinksByName(config.constant.ARRAY_INSTANCE_ZONE[2], html)) {
       break;
     }
-    if (text.includes(DIFFICULTY_CHOICE_MSG)) {
+    if (text.includes(config.constant.TEXT_INSTANCE_ZONE_DIFFICULTY)) {
       let personType = DOM('option').length == 1 ? 1 : DOM('option').get(-2).attribs.value;
       let form = DOM('form')[0];
       let data = `person_type=${personType}`;
