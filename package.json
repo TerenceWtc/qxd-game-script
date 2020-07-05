@@ -1,12 +1,12 @@
 {
   "name": "qxd-auto-script",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
     "dev": "cross-env NODE_ENV=dev nodemon ./bin/www",
     "prod": "cross-env NODE_ENV=prod nodemon ./bin/www",
-    "build": "pkg -t node10-win-x64 -o qxd-auto-script-v1.0.3.exe ./bin/www"
+    "build": "pkg -t node10-win-x64 -o qxd-auto-script-v1.0.4.exe ./bin/www"
   },
   "bin": "./bin/www",
   "dependencies": {

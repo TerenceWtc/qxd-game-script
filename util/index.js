@@ -23,7 +23,7 @@ const getLinksByName = (name, html, isFull, isReg, isBold) => {
   let resultUrl;
   hyperLinks = isFull ? hyperLinks.toArray() : hyperLinks.toArray().slice(0, -4);
   if (isReg) {
-    let nameReg = new RegExp(`${name}${config.constant.REGEX_COUNT}`, 'g');
+    let nameReg = new RegExp(`${name}`, 'g');
     resultUrl = hyperLinks.find(hyperLink => {
       return nameReg.test(hyperLink.children[0].data);
     });
@@ -75,7 +75,6 @@ const getInstance = async (url) => {
 }
 
 const postInstance = async (data, url) => {
-  logger.info('data: ', data);
   return await fetch.instance.post(url, data).then(async (response) => {
     let DOM = convertHtml(response, true);
     if (DOM('title').text() == config.constant.TITLE_BOOKMARK) {
@@ -96,6 +95,9 @@ const postInstance = async (data, url) => {
 }
 
 const click = async (name, url, req) => {
+  if (name == '攻击') {
+    await wait();
+  }
   if (url) {
     logger.info(`account: ${req.account}, click: ${name}, url: ${url}`);
     let html = await getInstance(url);
@@ -153,6 +155,16 @@ const randomIP = () => {
   return ip.join('.');
 }
 
+const checkVersion = async (version) => {
+  return  await bmob.findBmob('version', 'version', version);
+}
+
+const wait = async () => {
+  await new Promise((resolve) => {
+    setTimeout(() => {resolve()}, 500)
+  })
+}
+
 module.exports = {
   convertHtml,
   getLinksByName,
@@ -164,5 +176,7 @@ module.exports = {
   backToMainPage,
   getAccountName,
   getMainPage,
-  randomIP
+  randomIP,
+  checkVersion,
+  wait
 }

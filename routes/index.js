@@ -8,10 +8,10 @@ router.get('/daily-mission', async (req, res) => {
   res.send('ok');
 })
 
-router.get('/remains', async (req, res) => {
-  await service.remains.remains(req);
-  res.status('200');
-  res.send('ok');
-})
+// router.get('/remains', async (req, res) => {
+//   await service.remains.remains(req);
+//   res.status('200');
+//   res.send('ok');
+// })
 
 module.exports = router;

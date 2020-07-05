@@ -15,30 +15,33 @@
 
 const FINISH_MSG = '查看上次战斗结果';
 const NO_ENOUGH_ATTACK_POINT_MSG = '你的攻魂不足以产生伤害！';
-const OTK_LABEL = ['一键攻击遗迹', '一键修复遗迹'];
-const NOMAL_ATTACK_LABEL = ['攻击遗迹', '修复遗迹'];
+const OTK_LABEL = ['一键攻击遗迹', '一键修复遗迹', "一键攻击遗迹守护石像"];
+const NOMAL_ATTACK_LABEL = ['攻击遗迹', "攻击遗迹守护石像", '修复遗迹'];
 const labelArray = ['遗迹', '已开战', '加入防守方', '加入进攻方', '进入战斗'];
 
 const util = require('../../util');
 
 const remainsFull = async (html, req) => {
   req.logger.info('function remainsFull start');
-  let text, label, link;
+  let text, label, url;
   let i = 0;
   while (i < 10) {
     text = util.convertHtml(html);
     i++;
     if (text.includes(NO_ENOUGH_ATTACK_POINT_MSG)) {
-      [label, link] = util.getFirstLink(html)
+      [label, url] = util.getFirstLink(html)
     } else {
-      label = labelArray.find(arr => {
-        link = util.getLinksByName(arr, html);
-        return link != null;
-      });
+      [label, url] = util.getLabelAndURL(labelArray, html, true);
     }
-    html = await util.click(label, link, req);
+    if (!url) {
+      [label, url] = util.getLabelAndURL(OTK_LABEL, html, true);
+    }
+    if (!url) {
+      break;
+    }
+    html = await util.click(label, url, req);
     req.logger.info('label: ', label);
-    req.logger.info('link: ', link);
+    req.logger.info('url: ', url);
     text = util.convertHtml(html);
     req.logger.info(text);
   }
@@ -50,13 +53,13 @@ const remains28Fast = async (html, req) => {
 //   req.logger.info('function remains28Fast start');
 //   let DOM = util.convertHtml(html, true);
 //   let text = DOM.text();
-//   let label, link;
+//   let label, url;
 //   while (!text.includes(NOT_ENOUGH_EXPLORE_POINT_MSG)) {
 //     label = labelArray.find(arr => {
-//       link = util.getLinksByName(arr, html);
-//       return link != null;
+//       url = util.getLinksByName(arr, html);
+//       return url != null;
 //     });
-//     html = await util.click(label, link, req);
+//     html = await util.click(label, url, req);
 //     DOM = util.convertHtml(html, true);
 //     text = DOM.text();
 //   }
@@ -68,13 +71,13 @@ const remains28Slow = async (html, req) => {
 //   req.logger.info('function remains28Slow start');
 //   let DOM = util.convertHtml(html, true);
 //   let text = DOM.text();
-//   let label, link;
+//   let label, url;
 //   while (!text.includes(NOT_ENOUGH_EXPLORE_POINT_MSG)) {
 //     label = labelArray.find(arr => {
-//       link = util.getLinksByName(arr, html);
-//       return link != null;
+//       url = util.getLinksByName(arr, html);
+//       return url != null;
 //     });
-//     html = await util.click(label, link, req);
+//     html = await util.click(label, url, req);
 //     DOM = util.convertHtml(html, true);
 //     text = DOM.text();
 //   }
@@ -85,10 +88,10 @@ const remains28Slow = async (html, req) => {
 const remainsMission = async (html, req) => {
   req.logger.info(`account: ${req.account}, function remainsMission start`);
   let label = labelArray[0]
-  let link;
-  link = util.getLinksByName(label, html);
-  if (link) {
-    html = await util.click(label, link, req);
+  let url;
+  url = util.getLinksByName(label, html);
+  if (url) {
+    html = await util.click(label, url, req);
   }
   req.logger.info(`account: ${req.account}, function remainsMission end`);
   return await util.backToMainPage(req);

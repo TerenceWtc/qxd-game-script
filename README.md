@@ -14,7 +14,7 @@ Auto script for web word game '群雄斗'
 - [x] Friend Point (友情点)
 - [x] Present (礼物)
 - [x] Strong Hold (据点)
-- [ ] Battle (对战)
-- [ ] (世家福利)
-- [ ] (捐献)
+- [x] Battle (对战)
+- [x] Donate(捐献)
+- [x] Benefit(世家福利)
 - 咕咕咕。。。

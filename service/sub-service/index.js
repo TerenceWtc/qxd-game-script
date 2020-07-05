@@ -6,6 +6,9 @@ const subDraw = require('./draw');
 const subPresent = require('./present');
 const common = require('./common').common;
 const strongHold = require('./strong-hold');
+const battle = require('./battle');
+const donate = require('./donate');
+const benefit = require('./benefit');
 
 module.exports = {
   subChoice,
@@ -15,5 +18,8 @@ module.exports = {
   subDraw,
   subPresent,
   common,
-  strongHold
+  strongHold,
+  battle,
+  donate,
+  benefit
 }

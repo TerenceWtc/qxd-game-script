@@ -106,3 +106,5 @@ dist
 # my ingore config
 release/
 package-lock.json
+settings.json
+qxd.http

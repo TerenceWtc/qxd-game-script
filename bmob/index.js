@@ -6,9 +6,16 @@ const Bmob = require('../hydrogen-js-sdk-master/hydrogen-js-sdk-master/src/lib/a
 
 Bmob.initialize("13b3f548ea74ec76", "654321");
 
-const query = Bmob.Query('account');
+const queryAccount = Bmob.Query('account');
+const queryVersion = Bmob.Query('version');
 
-const findBmob = async (field, value) => {
+const findBmob = async (table, field, value) => {
+  let query;
+  if (table == 'account') {
+    query = queryAccount;
+  } else if (table == 'version') {
+    query = queryVersion;
+  }
   query.equalTo(field, "==", value);
   return await query.find().then(res => {
     return res.length > 0;
@@ -22,16 +29,16 @@ const findBmob = async (field, value) => {
 }
 
 const saveBmob = async (data) => {
-  let result = await findBmob('accountId', data.accountId);
+  let result = await findBmob('account', 'accountId', data.accountId);
   logger.info(result);
   if (result) {
     logger.info(`account is exist: ${data.accountId}, ${data.account}`);
     return;
   }
-  query.set('accountId', data.accountId);
-  query.set('name', data.account);
+  queryAccount.set('accountId', data.accountId);
+  queryAccount.set('name', data.account);
   // query.set('bookmark', data.bookmark);
-  await query.save().then(res => {
+  await queryAccount.save().then(res => {
     console.log(res)
   }).catch(err => {
     if (err.code == 'ECONNRESET') {
