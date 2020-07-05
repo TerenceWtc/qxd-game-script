@@ -9,7 +9,7 @@
   "REGEX_BOLD_PRE": "(<b>)?",
   "REGEX_BOLD_NEXT": "(<\\/b>)?",
   "REGEX_NAME_NOT_USED": "\\[(MM|GG)\\][\u4e00-\u9fa5]+\\((水|风|火)\\|\\d+级\\)",
-  "REGEX_NAME": "\\[[\u4e00-\u9fa5]+\\]",
+  "REGEX_NAME": "\\[[\u4e00-\u9fa5]+\\]\\(",
   "REGEX_MONEY": "金钱:\\d+",
   "TITLE_BOOKMARK": "书签",
   "TITLE_TOO_FAST": "【群雄斗】点击太快了！！",
