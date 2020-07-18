@@ -1,7 +1,7 @@
 /*global process*/
 const axios = require('axios');
 const log4js = require('../config/log');
-const logger = log4js.getLogger(process.env.NODE_ENV || 'prod');
+const logger = log4js.getLogger(process.env.NODE_ENV || 'default');
 // const cheerio = require('cheerio');
 // const qs = require('qs');
 const uuid = require('node-uuid');

@@ -8,7 +8,7 @@ const sub = require('./sub-service');
 // 攻击遗迹守护石像
 const account = config.settings['遗迹账号'];
 
-const remains = async (req) => {
+const remains1 = async (req) => {
   req.logger.info('start remains');
   let html;
 
@@ -21,7 +21,7 @@ const remains = async (req) => {
 
   // generate IP
   global.ip = util.randomIP();
-  req.logger.info(`IP: ${global.ip}`);
+  // req.logger.info(`IP: ${global.ip}`);
   
   // login
   html = await util.getInstance(account);
@@ -30,12 +30,41 @@ const remains = async (req) => {
   // store main page
   global.mainPageLink = await util.getMainPage(html, req);
 
-  html = await sub.subRemains.remainsFull(html, req);
+  html = await sub.subRemains.remainsFull1(html, req);
+
+  // res.status(200);
+  // res.send('ok');
+}
+
+const remains2 = async (req) => {
+  req.logger.info('start remains');
+  let html;
+
+  // check version
+  if (!util.checkVersion()) {
+    req.logger.error('Your version is expired, please get the latest one.');
+    req.logger.error('版本已过时，请获取最新版');
+    return;
+  }
+
+  // generate IP
+  global.ip = util.randomIP();
+  // req.logger.info(`IP: ${global.ip}`);
+  
+  // login
+  html = await util.getInstance(account);
+  req.account = util.getAccountName(html);
+
+  // store main page
+  global.mainPageLink = await util.getMainPage(html, req);
+
+  html = await sub.subRemains.remainsFull2(html, req);
 
   // res.status(200);
   // res.send('ok');
 }
 
 module.exports = {
-  remains
+  remains1,
+  remains2
 }

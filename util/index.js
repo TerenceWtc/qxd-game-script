@@ -4,7 +4,7 @@ const bmob = require('../bmob');
 const config = require('../config');
 const fetch = require('../fetch');
 const log4js = require('../config/log');
-const logger = log4js.getLogger(process.env.NODE_ENV || 'prod');
+const logger = log4js.getLogger(process.env.NODE_ENV || 'default');
 
 const convertHtml = (html, isDOM = false) => {
   let document;
@@ -55,14 +55,14 @@ const getFirstLink = (html) => {
   return [result.children[0].data, result.attribs.href];
 };
 
-const getInstance = async (url) => {
+const getInstance = async (url, req) => {
   return await fetch.instance.get(url).then(async (response) => {
     let DOM = convertHtml(response, true);
     if (DOM('title').text() == config.constant.TITLE_BOOKMARK) {
       response = await fetch.instance.get(getLinksByName(config.constant.TEXT_RETURN_GAME, response, true));
     }
     if (DOM('title').text() == config.constant.TITLE_TOO_FAST) {
-      response = await fetch.instance.get(global.mainPageLink);
+      response = await await click(config.constant.LABEL_MAIN_PAGE, global.mainPageLink, req);
     }
     if (DOM.text().includes(config.constant.TEXT_IP_BIND)) {
       logger.error(config.constant.TEXT_IP_BIND)
@@ -74,14 +74,14 @@ const getInstance = async (url) => {
   })
 }
 
-const postInstance = async (data, url) => {
+const postInstance = async (data, url, req) => {
   return await fetch.instance.post(url, data).then(async (response) => {
     let DOM = convertHtml(response, true);
     if (DOM('title').text() == config.constant.TITLE_BOOKMARK) {
       response = await getInstance(getLinksByName(config.constant.TEXT_RETURN_GAME, response, true));
     }
     if (DOM('title').text() == config.constant.TITLE_TOO_FAST) {
-      response = await fetch.instance.get(global.mainPageLink);
+      response = await await click(config.constant.LABEL_MAIN_PAGE, global.mainPageLink, req);
     }
     if (DOM.text().includes(config.constant.TEXT_IP_BIND)) {
       logger.error(config.constant.TEXT_IP_BIND)
@@ -99,8 +99,8 @@ const click = async (name, url, req) => {
     await wait();
   }
   if (url) {
-    logger.info(`account: ${req.account}, click: ${name}, url: ${url}`);
-    let html = await getInstance(url);
+    logger.info(`account: ${req.account}, click: ${name}`);
+    let html = await getInstance(url, req);
     return html;
   }
   logger.error(`account: ${req.account}, click: ${name}, url: ${url} not found`);
@@ -109,10 +109,11 @@ const click = async (name, url, req) => {
 
 const post = async (data, url, req) => {
   if (url) {
-    req.logger.info(`account: ${req.account}, post: ${data}, url: ${url}`);
-    let html = await postInstance(data, url);
+    req.logger.info(`account: ${req.account}, post: ${data}`);
+    let html = await postInstance(data, url, req);
     return html;
   }
+  logger.error(`account: ${req.account}, post: ${data}, url: ${url} not found`);
   return null;
 }
 
@@ -161,7 +162,7 @@ const checkVersion = async (version) => {
 
 const wait = async () => {
   await new Promise((resolve) => {
-    setTimeout(() => {resolve()}, 500)
+    setTimeout(() => {resolve()}, 200);
   })
 }
 

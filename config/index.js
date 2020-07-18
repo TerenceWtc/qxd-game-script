@@ -9,8 +9,10 @@ try {
 
 const settings = settingsJson ? settingsJson : require('./settings.json');
 const constant = require('./constant.json');
+const bank = require('./bank.json');
 
 module.exports = {
   settings,
-  constant
+  constant,
+  bank
 }

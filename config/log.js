@@ -1,3 +1,4 @@
+/*global process */
 var log4js = require('log4js')
 
 log4js.configure(
@@ -17,17 +18,13 @@ log4js.configure(
       }
     },
     categories: {
-      prod: {
-        appenders: ['fileLog', 'console'],
-        level: 'info'
-      },
       dev: {
         appenders: ['fileLog', 'console'],
         level: 'debug'
       },
       default: {
         appenders: ['fileLog', 'console'],
-        level: 'debug'
+        level: 'info'
       }
     }
   }

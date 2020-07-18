@@ -9,6 +9,8 @@ const strongHold = require('./strong-hold');
 const battle = require('./battle');
 const donate = require('./donate');
 const benefit = require('./benefit');
+const event05 = require('./event-05');
+const commonEvent = require('./common-event').commonEvent;
 
 module.exports = {
   subChoice,
@@ -21,5 +23,7 @@ module.exports = {
   strongHold,
   battle,
   donate,
-  benefit
+  benefit,
+  event05,
+  commonEvent
 }

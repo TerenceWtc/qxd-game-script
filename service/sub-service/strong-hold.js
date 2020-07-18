@@ -25,9 +25,12 @@ const strongHold = async (html, req) => {
           html = await util.click(label, url, req);
           continue;
         }
+      } else {
+        [label, url] = util.getLabelAndURL([stage], html);
       }
-      
-      if (stage == '紫荆关') {
+      if (url) {
+        // continue
+      } else if (stage == '紫荆关') {
         // both 2 pages have no resource.
         if (page > 2) {
           html = await util.backToMainPage(req);
