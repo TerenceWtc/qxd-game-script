@@ -3,7 +3,8 @@ const config = require('../config');
 const log4js = require('../config/log');
 const logger = log4js.getLogger(process.env.NODE_ENV || 'default');
 
-const Bmob = require('../hydrogen-js-sdk-master/hydrogen-js-sdk-master/src/lib/app.js');
+// const Bmob = require('../hydrogen-js-sdk-master/hydrogen-js-sdk-master/src/lib/app.js');
+const Bmob = require('hydrogen-js-sdk');
 
 Bmob.initialize(config.constant.BMOB_SECRET_KEY, config.constant.BMOB_API_SECRET);
 

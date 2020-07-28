@@ -14,6 +14,7 @@
     "cheerio": "^1.0.0-rc.3",
     "cross-env": "^7.0.2",
     "express": "~4.16.1",
+    "hydrogen-js-sdk": "https://github.com/bmob/hydrogen-js-sdk.git#2.2.5",
     "log4js": "^6.3.0",
     "node-uuid": "^1.4.8",
     "nodemon": "^2.0.4"
