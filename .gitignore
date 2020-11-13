@@ -108,3 +108,4 @@ release/
 package-lock.json
 settings.json
 qxd.http
+test.js
