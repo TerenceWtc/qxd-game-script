@@ -3,8 +3,8 @@
   "version": "2.0.1",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./bin/www",
-    "prod": "NODE_ENV=prod node ./bin/www"
+    "dev": "nodemon ./src/bin/www",
+    "prod": "NODE_ENV=prod node ./src/bin/www"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
