@@ -7,6 +7,8 @@ jobs:
     auto-build:
         runs-on: [self-hosted, Linux, X64]
         steps:
+        - name: Backup
+          run: cp ./skill.json ../../skill.json
         - name: Checkout
           uses: actions/checkout@v2
         # - name: Use Node.js 10.19
