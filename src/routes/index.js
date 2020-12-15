@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/health', (req, res) => {
     req.logger.info('health check');
     res.status(200);
-    res.send({ message: 'health check' });
+    res.render('template', { data: 'health check' });
 });
 
 const preRouter = async (req, res, next) => {
@@ -17,10 +17,10 @@ const preRouter = async (req, res, next) => {
     const runningCheckResult = await bizHelper.runningCheck(id);
     if (runningCheckResult) {
         res.status(200);
-        res.send({ message: `${runningCheckResult} is running now!` });
+        res.render('template', { data: `${runningCheckResult} is running now!` });
     } else {
         res.status(200);
-        res.send({ message: 'start' });
+        res.render('template', { data: 'start' });
         next();
     }
 };
@@ -31,6 +31,6 @@ router.get('/event/:id', preRouter, eventService.event);
 
 router.get('/mission/:id', preRouter, missionService.mission);
 
-router.get('/statistics/:id', missionService.statistics);
+router.get('/statistics', missionService.statistics);
 
 module.exports = router;

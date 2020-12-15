@@ -71,7 +71,7 @@ const mission = async (req) => {
 const statistics = (req, res) => {
     req.logger.debug('statistics');
     res.status(200);
-    res.send(JSON.parse(fs.readFileSync('skill.json')));
+    res.json(JSON.parse(fs.readFileSync('skill.json')));
 };
 
 module.exports = {
