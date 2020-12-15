@@ -105,6 +105,6 @@ dist
 
 # my ingore config
 release/
-package-lock.json
 qxd.http
 test.js
+prod.json

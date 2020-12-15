@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/health', (req, res) => {
     req.logger.info('health check');
     res.status(200);
-    res.send('health check');
+    res.send({ message: 'health check' });
 });
 
 const preRouter = async (req, res, next) => {
@@ -17,10 +17,10 @@ const preRouter = async (req, res, next) => {
     const runningCheckResult = await bizHelper.runningCheck(id);
     if (runningCheckResult) {
         res.status(200);
-        res.send(`${runningCheckResult} is running now!`);
+        res.send({ message: `${runningCheckResult} is running now!` });
     } else {
         res.status(200);
-        res.send('start');
+        res.send({ message: 'start' });
         next();
     }
 };
