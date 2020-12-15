@@ -31,6 +31,6 @@ router.get('/event/:id', preRouter, eventService.event);
 
 router.get('/mission/:id', preRouter, missionService.mission);
 
-router.get('/statistics', missionService.statistics);
+router.get('/statistics/:id', missionService.statistics);
 
 module.exports = router;
