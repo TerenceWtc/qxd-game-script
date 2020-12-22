@@ -31,36 +31,38 @@ const event = async (req) => {
         // store main page
         global.qxd.mainPageLink = await bizHelper.getMainPage(html);
 
-        // // 【活动】每日合成福利
+        // // 每日合成福利
         // html = await commonEvent.common(html, config.ARRAY_EVENT_12[1], config.FLAG_LOOP, config.ARRAY_EVENT_12);
-        // 【活动】过关斩将
+        // 过关斩将
         html = await commonEvent.common(html, config.ARRAY_EVENT_13[1], config.FLAG_LOOP, config.ARRAY_EVENT_13);
-        // 【活动】积分乐园
+        // 积分乐园
         html = await commonEvent.common(html, config.ARRAY_EVENT_10[1], config.FLAG_LOOP, config.ARRAY_EVENT_10);
-        // 【金秋活动】签到领礼包
+        // 签到领礼包
         html = await commonEvent.common(html, config.ARRAY_EVENT_06[1], config.FLAG_LOOP, config.ARRAY_EVENT_06);
-        // 【金秋活动】活跃福利
-        html = await commonService.common(html, config.ARRAY_EVENT_11[1], config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_EVENT_11);
+        // 活跃福利
+        html = await commonEvent.common(html, config.ARRAY_EVENT_11[1], config.FLAG_LOOP, config.ARRAY_EVENT_11);
 
-        // 【活动】合练送抽卡券
+        // 合练送抽卡券
         html = await commonEvent.common(html, config.ARRAY_EVENT_15[1], config.FLAG_LOOP, config.ARRAY_EVENT_15);
-        // 【活动】祈福送良将
-        html = await commonService.common(html, config.ARRAY_EVENT_08[1], config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_EVENT_08);
-        // 【活动】天梯活动周
-        html = await commonService.common(html, config.ARRAY_EVENT_09[1], config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_EVENT_09);
-        // 【活动】每日活跃福袋
+        // 祈福送良将
+        html = await commonEvent.common(html, config.ARRAY_EVENT_08[1], config.FLAG_LOOP, config.ARRAY_EVENT_08);
+        // 天梯活动周
+        html = await commonEvent.common(html, config.ARRAY_EVENT_09[1], config.FLAG_LOOP, config.ARRAY_EVENT_09);
+        // 每日活跃福袋
         html = await commonEvent.common(html, config.ARRAY_EVENT_14[1], config.FLAG_LOOP, config.ARRAY_EVENT_14);
 
-        // 【活动】每日运镖
+        // 每日运镖
         html = await escortEvent.escort(html);
-        // 【活动】累计活跃领钻券
-        html = await commonService.common(html, config.ARRAY_EVENT_04[1], config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_EVENT_04);
-        // 【活动】英雄酒馆
-        html = await commonService.common(html, config.ARRAY_EVENT_01[1], config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_EVENT_01);
-        // 【活动】答题得合成卡
-        html = await commonService.common(html, config.ARRAY_EVENT_02[1], config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_EVENT_02);
-        // 【活动】江湖客栈
-        html = await commonService.common(html, config.ARRAY_EVENT_03[1], config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_EVENT_03);
+        // 累计活跃领钻券
+        html = await commonEvent.common(html, config.ARRAY_EVENT_04[1], config.FLAG_LOOP, config.ARRAY_EVENT_04);
+        // 英雄酒馆
+        html = await commonEvent.common(html, config.ARRAY_EVENT_01[1], config.FLAG_LOOP, config.ARRAY_EVENT_01);
+        // 答题得合成卡
+        html = await commonEvent.common(html, config.ARRAY_EVENT_02[1], config.FLAG_LOOP, config.ARRAY_EVENT_02);
+        // 江湖客栈
+        html = await commonEvent.common(html, config.ARRAY_EVENT_03[1], config.FLAG_LOOP, config.ARRAY_EVENT_03);
+        // 江湖赏金令
+        html = await commonEvent.common(html, config.ARRAY_EVENT_PASS[1], config.FLAG_LOOP, config.ARRAY_EVENT_PASS);
 
         await logoutSerivce.logout(html);
         global.qxd = {};

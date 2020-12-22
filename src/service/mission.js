@@ -51,7 +51,6 @@ const mission = async (req) => {
         html = await commonService.common(html, 'mission', config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_MISSION);
         html = await commonService.common(html, 'zb', config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_zb);
         html = await strongHoldService.strongHold(html);
-        html = await commonService.common(html, 'pass', config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_PASS);
 
         html = await sellService.sell(html);
         html = await saveMoneyService.saveMoney(html);

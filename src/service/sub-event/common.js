@@ -17,8 +17,8 @@ const common = async (html, functionName, loop, array) => {
             html = await apiUtil.getUrl(label, url);
             continue;
         }
-        [label, url] = bizUtil.getLabelAndURL(array, html);
-        receive = label === '领取';
+        [label, url] = bizUtil.getLabelAndURL(array, html, false, true);
+        receive = label === '领取' || label === '完成';
         if (!url) {
             break;
         }
