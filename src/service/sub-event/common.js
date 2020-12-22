@@ -18,7 +18,7 @@ const common = async (html, functionName, loop, array) => {
             continue;
         }
         [label, url] = bizUtil.getLabelAndURL(array, html, false, true);
-        receive = label === '领取' || label === '完成';
+        receive = label === '^领取$' || label === '^完成$';
         if (!url) {
             break;
         }
