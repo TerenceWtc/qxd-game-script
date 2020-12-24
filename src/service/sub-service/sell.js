@@ -178,10 +178,10 @@ const statistics = async (html) => {
                     if (cardInfo.cardSoul < 50) {
                         if (skillList.includes(cardInfo.cardSkill)) {
                             global.skill[cardInfo.cardSkill] += 1;
-                        } else if (!global.skill[cardInfo.cardMoney]) {
-                            global.skill[cardInfo.cardMoney] = 1;
+                        } else if (!global.skill[`${cardInfo.cardMoney}金钱`]) {
+                            global.skill[`${cardInfo.cardMoney}金钱`] = 1;
                         } else {
-                            global.skill[cardInfo.cardMoney] += 1;
+                            global.skill[`${cardInfo.cardMoney}金钱`] += 1;
                         }
                     } else if (!global.skill[`${cardInfo.cardSoul}魂`]) {
                         global.skill[`${cardInfo.cardSoul}魂`] = 1;
