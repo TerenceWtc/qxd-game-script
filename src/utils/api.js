@@ -21,7 +21,7 @@ const getUrl = async (label, url, seconds = 100) => {
                 html = await api.getApi(bizUtil.getLinksByName(config.TEXT_RETURN_GAME, html, true));
             }
             if (DOM('title').text() === config.TITLE_TOO_FAST) {
-                html = await bizUtil.getLinksByName(config.LABEL_MAIN_PAGE, global.qxd.mainPageLink);
+                html = await api.getApi(bizUtil.getLinksByName(config.LABEL_MAIN_PAGE, global.qxd.mainPageLink));
             }
             if (DOM.text().includes(config.TEXT_IP_BIND)) {
                 logger.error(config.TEXT_IP_BIND);
@@ -36,7 +36,7 @@ const getUrl = async (label, url, seconds = 100) => {
             return html;
         } catch (err) {
             logger.error('get request error:', err);
-            return await getUrl(label, url, seconds);
+            return await api.getApi(bizUtil.getLinksByName(config.LABEL_MAIN_PAGE, global.qxd.mainPageLink));
         }
     }
     logger.error(`account: ${global.qxdname}, click: ${label}, url: ${url} not found`);

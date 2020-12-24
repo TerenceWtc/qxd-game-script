@@ -2,7 +2,7 @@ const fetchApi = require('../api');
 const config = require('../config');
 const { bizHelper } = require('../helper');
 const { commonEvent, escortEvent } = require('./sub-event');
-const { commonService, logoutSerivce } = require('./sub-service');
+const { logoutSerivce } = require('./sub-service');
 const { bizUtil, cryptoUtil, dbUtil } = require('../utils');
 
 const event = async (req) => {

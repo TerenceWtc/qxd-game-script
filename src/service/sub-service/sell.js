@@ -16,17 +16,16 @@ const sell = async (html) => {
         if (text.includes('英雄出售')) {
             const cardList = DOM('input');
             for (let i = 0; i < cardList.length - 1; i++) {
-                const length = cardList[i].next.next.next.next.data.split('-').length - 1;
                 const cardDetail = cardList[i].next.next.next.next.data;
                 const cardInfo = {
                     cardValue: cardList[i].attribs.value,
                     cardLevel: cardDetail.split('-')[2],
                     cardSoul: cardDetail.split('-')[3].split('魂')[0],
-                    cardMoney: cardDetail.split('-')[length].split('金钱')[0],
                     cardSkill: cardDetail.split('-')[4],
+                    cardMoney: cardList[i].next.next.next.next.next.children[0].data,
                 };
                 if (cardInfo.cardLevel === 'lv1') {
-                    if (cardInfo.cardSoul < 50 && cardInfo.cardMoney < 3000) {
+                    if (cardInfo.cardSoul < 50 && cardInfo.cardMoney < 3400) {
                         if (!skillList.includes(cardInfo.cardSkill)) {
                             sellList.push(`card_id%5B%5D=${cardInfo.cardValue}`);
                         }
@@ -173,16 +172,21 @@ const statistics = async (html) => {
                     cardLevel: cardDetail.split('-')[2],
                     cardSoul: cardDetail.split('-')[3].split('魂')[0],
                     cardSkill: cardDetail.split('-')[4],
+                    cardMoney: cardList[i].next.next.next.next.next.children[0].data,
                 };
                 if (cardInfo.cardLevel === 'lv1') {
                     if (cardInfo.cardSoul < 50) {
                         if (skillList.includes(cardInfo.cardSkill)) {
                             global.skill[cardInfo.cardSkill] += 1;
+                        } else if (!global.skill[cardInfo.cardMoney]) {
+                            global.skill[cardInfo.cardMoney] = 1;
+                        } else {
+                            global.skill[cardInfo.cardMoney] += 1;
                         }
-                    } else if (!global.skill[cardDetail]) {
-                        global.skill[cardDetail] = 1;
+                    } else if (!global.skill[`${cardInfo.cardSoul}魂`]) {
+                        global.skill[`${cardInfo.cardSoul}魂`] = 1;
                     } else {
-                        global.skill[cardDetail] += 1;
+                        global.skill[`${cardInfo.cardSoul}魂`] += 1;
                     }
                 }
             }
