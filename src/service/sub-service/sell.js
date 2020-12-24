@@ -25,7 +25,7 @@ const sell = async (html) => {
                     cardMoney: cardList[i].next.next.next.next.next.children[0].data,
                 };
                 if (cardInfo.cardLevel === 'lv1') {
-                    if (cardInfo.cardSoul < 50 && cardInfo.cardMoney < 3400) {
+                    if (cardInfo.cardSoul < 50 && cardInfo.cardMoney < 3000) {
                         if (!skillList.includes(cardInfo.cardSkill)) {
                             sellList.push(`card_id%5B%5D=${cardInfo.cardValue}`);
                         }
