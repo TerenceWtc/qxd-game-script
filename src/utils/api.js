@@ -21,7 +21,7 @@ const getUrl = async (label, url, seconds = 100) => {
                 html = await api.getApi(bizUtil.getLinksByName(config.TEXT_RETURN_GAME, html, true));
             }
             if (DOM('title').text() === config.TITLE_TOO_FAST) {
-                html = await api.getApi(bizUtil.getLinksByName(config.LABEL_MAIN_PAGE, global.qxd.mainPageLink));
+                html = await api.getApi(global.qxd.mainPageLink);
             }
             if (DOM.text().includes(config.TEXT_IP_BIND)) {
                 logger.error(config.TEXT_IP_BIND);
@@ -31,12 +31,13 @@ const getUrl = async (label, url, seconds = 100) => {
                 throw new Error('error html');
             }
             if (html.replace(/(^\s*)|(\s*$)/g, '') === '') {
+                logger.error('html2: ', html);
                 throw new Error('empty html');
             }
             return html;
         } catch (err) {
             logger.error('get request error:', err);
-            return await api.getApi(bizUtil.getLinksByName(config.LABEL_MAIN_PAGE, global.qxd.mainPageLink));
+            return await api.getApi(global.qxd.mainPageLink);
         }
     }
     logger.error(`account: ${global.qxdname}, click: ${label}, url: ${url} not found`);
@@ -54,7 +55,7 @@ const postUrl = async (data, url, seconds = 100) => {
                 html = await api.getApi(bizUtil.getLinksByName(config.TEXT_RETURN_GAME, html, true));
             }
             if (DOM('title').text() === config.TITLE_TOO_FAST) {
-                html = await bizUtil.getLinksByName(config.LABEL_MAIN_PAGE, global.qxd.mainPageLink);
+                html = await api.getApi(global.qxd.mainPageLink);
             }
             if (DOM.text().includes(config.TEXT_IP_BIND)) {
                 logger.error(config.TEXT_IP_BIND);
@@ -69,7 +70,7 @@ const postUrl = async (data, url, seconds = 100) => {
             return html;
         } catch (err) {
             logger.error('post request error:', err);
-            return await getUrl(data, url, seconds);
+            return await api.getApi(global.qxd.mainPageLink);
         }
     }
     logger.error(`account: ${global.qxd.name}, post: ${data}, url: ${url} not found`);
