@@ -17,7 +17,7 @@ const escort = async (html) => {
             array.splice(3, 1);
             slice = false;
         }
-        [label, url] = bizUtil.getLabelAndURL(array, html);
+        [label, url] = bizUtil.getLabelAndURL(array, html, false, true);
         if (!url) {
             break;
         }

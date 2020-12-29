@@ -35,6 +35,9 @@ const attack = async (req) => {
 
         html = await presentService.present(html);
         html = await sellService.sell(html);
+        if (accounts[accountIndex].id === 102) {
+            html = await battleService.battle(html, uid);
+        }
         html = await battleService.battle(html, uid);
         html = await saveMoneyService.saveMoney(html);
         // html = await donateService.donate(html);
