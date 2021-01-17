@@ -63,7 +63,8 @@ const event = async (req) => {
         html = await commonEvent.common(html, config.ARRAY_EVENT_03[1], config.FLAG_LOOP, config.ARRAY_EVENT_03);
         // 江湖赏金令
         html = await commonEvent.common(html, config.ARRAY_EVENT_PASS[1], config.FLAG_LOOP, config.ARRAY_EVENT_PASS);
-
+        // 烽火戏诸侯
+        html = await commonEvent.common(html, config.ARRAY_EVENT_FENGHUO[1], config.FLAG_LOOP, config.ARRAY_EVENT_FENGHUO);
         await logoutSerivce.logout(html);
         global.qxd = {};
         await dbUtil.exectue(`update account set flag_run = 0 where id = ${accounts[accountIndex].id}`);

@@ -6,6 +6,7 @@ log4js.configure(
             fileLog: {
                 type: 'file',
                 filename: `${process.cwd()}/logs/log`,
+                backups: 30,
                 pattern: 'yyyy-MM-dd.log',
                 alwaysIncludePattern: true,
                 encoding: 'utf-8',

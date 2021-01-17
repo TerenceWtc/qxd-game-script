@@ -130,9 +130,6 @@ const statistics = async (html) => {
     let label; let url;
     if (!global.skill) {
         global.skill = {
-            疾风波1级: 0,
-            烈焰风暴1级: 0,
-            地泉冲击1级: 0,
             剑刃风暴1级: 0,
             地狱火之利刃1级: 0,
             洪流崩涌1级: 0,

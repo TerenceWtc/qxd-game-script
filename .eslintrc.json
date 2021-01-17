@@ -25,7 +25,6 @@
         "no-await-in-loop": "off",
         "prefer-destructuring": "off",
         "no-continue": "off",
-        "max-len": "off",
-        "linebreak-style": ["error", "windows"]
+        "max-len": "off"
     }
 }

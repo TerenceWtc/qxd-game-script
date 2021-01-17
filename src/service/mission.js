@@ -49,8 +49,9 @@ const mission = async (req) => {
         html = await drawService.draw(html);
         html = await commonService.common(html, 'friend-point', config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_FRIEND_POINT);
         html = await commonService.common(html, 'mission', config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_MISSION);
-        html = await commonService.common(html, 'zb', config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_zb);
+        html = await commonService.common(html, 'zb', config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_ZHENGBA);
         html = await strongHoldService.strongHold(html);
+        html = await commonService.common(html, '征战', config.FLAG_LOOP, config.BREAK_TEXT_NONE, config.ARRAY_ZHENGZHAN);
 
         html = await sellService.sell(html);
         html = await saveMoneyService.saveMoney(html);
